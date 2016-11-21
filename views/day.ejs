@@ -1,0 +1,21 @@
+<%layout('/layout/page');%>
+<%block('title', title);%>
+
+<div class="col-lg-offset-2 col-lg-10">
+    <div class="col-lg-offset-2 col-lg-10">
+        <a href="/calendar/<%-date.getMonth()%>/<%-date.getFullYear()%>"><%-month%></a>
+
+    </div>
+    <div class="list-group">
+        <% for(var i = 0; i < dayEvents.length; i++)
+        {
+            %><a href="#" class="list-group-item">eventId<%=dayEvents[i].id%></a><%
+        }
+        %>
+    </div>
+    <center>
+        <div class="col-lg-offset-2 col-lg-10">
+            <button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="">add event</button>
+        </div>
+    </center>
+</div>

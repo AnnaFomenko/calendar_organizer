@@ -1,0 +1,16 @@
+<%layout('/layout/page');%>
+<%block('title', title);%>
+
+<div class="col-lg-offset-2 col-lg-10">
+    <div class="col-lg-offset-2 col-lg-10">
+        <a href="/day/<%-date.getDate()%>/<%-date.getMonth()%>/<%-date.getFullYear()%>"><%-month%></a>
+
+    </div>
+    <center>
+        <div class="col-lg-offset-2 col-lg-10">
+            <button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="">Edit</button>
+            <button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="">delete event</button>
+        </div>
+    </center>
+</div>
+<p class="lead">Here will be events details</p>
