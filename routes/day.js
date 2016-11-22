@@ -1,4 +1,5 @@
 exports.get = function (req, res) {
+
     var constants = require("libs/constants");
     var mysql = require("libs/mysql");
     var date = new Date();
@@ -7,12 +8,15 @@ exports.get = function (req, res) {
     date.setFullYear(req.params.year);
 
     const title = constants.FULL_WEEK_DAYS[date.getDay()]+" "+date.getDate()+" "+constants.MONTHES[date.getMonth()]+ " "+date.getFullYear();
-    const month = "&lt;"+constants.MONTHES[date.getMonth()];
+    const back = "&lt;"+constants.MONTHES[date.getMonth()];
 
-    //TODO we can take it from monthEvents
     function handleDayEvents(rows){
-        res.render('day', {title:title, user:req.user, date:date, events:[], month:month, dayEvents:rows});
+        req.dayEvents = res.locals.dayEvents = rows;
+        res.render('day', {title:title, user:req.user, date:date, dayEvents:rows, back:back});
+
     }
-    mysql.getEventsByDate(constants.USER_ID, date.getFullYear(), date.getMonth(),date.getDate(), handleDayEvents);
+
+    mysql.getEventsByDate(constants.USER_ID, date.getFullYear(), date.getMonth(), date.getDate(), handleDayEvents);
+
 }
 

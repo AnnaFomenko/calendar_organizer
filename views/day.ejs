@@ -3,19 +3,19 @@
 
 <div class="col-lg-offset-2 col-lg-10">
     <div class="col-lg-offset-2 col-lg-10">
-        <a href="/calendar/<%-date.getMonth()%>/<%-date.getFullYear()%>"><%-month%></a>
+        <a href="/calendar/<%-date.getMonth()%>/<%-date.getFullYear()%>"><%-back%></a>
 
     </div>
     <div class="list-group">
         <% for(var i = 0; i < dayEvents.length; i++)
         {
-            %><a href="#" class="list-group-item">eventId<%=dayEvents[i].id%></a><%
+            %><a href="/event/<%-dayEvents[i].id%>" class="list-group-item"><%=dayEvents[i].title%></a><%
         }
         %>
     </div>
     <center>
         <div class="col-lg-offset-2 col-lg-10">
-            <button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="">add event</button>
+            <button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="">Add Event</button>
         </div>
     </center>
 </div>

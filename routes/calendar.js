@@ -4,6 +4,7 @@ exports.get = function (req, res) {
     var mysql = require("libs/mysql");
     var date = new Date();
     var curMonth = true;
+    res.locals.monthEvents = [];
 
     if(req.params.month && req.params.year)
     {
@@ -21,6 +22,7 @@ exports.get = function (req, res) {
     prevMonth.setMonth(date.getMonth()-1);
 
     function handleMonthEvents(rows){
+        res.locals.monthEvents = rows;
         res.render('calendar', {user:req.user, date:date, constants:constants,
             nextMonth:nextMonth, prevMonth:prevMonth, curMonth:curMonth,
             monthEvents:rows});
@@ -29,3 +31,29 @@ exports.get = function (req, res) {
     mysql.getEventsByMonth(constants.USER_ID, date.getFullYear(), date.getMonth(), handleMonthEvents);
 }
 
+const crypto = require("crypto");
+exports.post = function (req, res, next) {
+    console.log(req.body);
+
+    var year = req.body.year;
+    var month = req.body.month;
+    var date = req.body.date;
+    var title = req.body.title;
+    var description = req.body.eventdesc;
+    var starthh = req.body.starthh;
+    var endhh = req.body.endhh;
+    var startmm = req.body.startmm;
+    var endmm = req.body.endmm;
+    var id = req.body.id;
+    if(!id)
+    {
+        id = crypto.randomBytes(16).toString("hex");
+    }
+
+    function handleAddEvent(rows){
+        /*res.render('calendar', {user:req.user, date:date, constants:constants,
+         nextMonth:nextMonth, prevMonth:prevMonth, curMonth:curMonth,
+         monthEvents:rows});*/
+    }
+    mysql.addEvent(constants.USER_ID, id, year, month, date, starthh, startmm, endhh, endmm, title, description, handleAddEvent);
+}

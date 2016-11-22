@@ -1,0 +1,15 @@
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| id          | varchar(32)   | NO   |     | NULL    |       |
+| userId      | bigint(20)    | NO   |     | NULL    |       |
+| year        | int(11)       | NO   |     | NULL    |       |
+| month       | int(11)       | NO   |     | NULL    |       |
+| date        | int(11)       | NO   |     | NULL    |       |
+| startmm     | int(11)       | YES  |     | NULL    |       |
+| endmm       | int(11)       | YES  |     | NULL    |       |
+| title       | varchar(64)   | YES  |     | NULL    |       |
+| description | varchar(1024) | YES  |     | NULL    |       |
+| starthh     | int(11)       | YES  |     | NULL    |       |
+| endhh       | int(11)       | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+

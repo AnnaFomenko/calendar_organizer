@@ -7,5 +7,10 @@ module.exports = function (app) {
     //app.post("/logout", require("./logout").post);
     app.get("/calendar/:month?/:year?",require("./calendar").get);
     app.get("/day/:date/:month/:year",require("./day").get);
-    app.get("/eventDetails/:eventId",require("./eventDetails").get);
+    app.get("/event/:id",require("./event").get);
+
+    app.post("/editevent",require("./editevent").post);
+    app.get("/editevent",require("./editevent").get);
+    app.all("/editevent",require("./editevent").all);
+    app.post("/calendar",require("./calendar").post);
 }
