@@ -2,16 +2,10 @@
 <%block('title',"Calendar");%>
 <div class="col-lg-offset-2 col-lg-10">
 <%-partial('./partials/month', {title: constants.MONTHES[date.getMonth()]+","+date.getFullYear(), curMonth:curMonth})%>
-<% changeMonth = function (newDate)
-{
-    window.location.href = "/calendar/"+newDate.getMonth()+"/"+newDate.getFullYear();
-}%>
 </div>
 <div class="col-lg-offset-2 col-lg-10">
     <center>
         <div class="col-lg-offset-2 col-lg-10">
-            <!--button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="">test</button-->
-
             <a href="/calendar/<%-prevMonth.getMonth()%>/<%-prevMonth.getFullYear()%>">prev</a>
             <a href="/calendar/<%-nextMonth.getMonth()%>/<%-nextMonth.getFullYear()%>">next</a>
         </div>

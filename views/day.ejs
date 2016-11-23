@@ -15,7 +15,9 @@
     </div>
     <center>
         <div class="col-lg-offset-2 col-lg-10">
-            <button type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="">Add Event</button>
+            <form action="/editevent" method="get">
+                <button name="add" class="btn btn-primary" data-loading-text="Loading..." value="<%=date.toString()%>">Add Event</button>
+            </form>
         </div>
     </center>
 </div>

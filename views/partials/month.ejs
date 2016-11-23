@@ -16,13 +16,12 @@
 </head>
 <body>
 <h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
 <center>
     <table border=1 cellspacing=0 cellpadding=0 bordercolor=ccccccc>
         <tr>
             <td>
                 <center>
-                    <table border=0 cellspacing=0 cellpadding=0 bgcolor=ccccccc>
+                    <table border=.5 cellspacing=0 cellpadding=0 bgcolor=ccccccc>
                         <tr>
                             <td colspan=<%=WEEK_LENGTH%> bgcolor="#EFEFEF">
                                 <center><b><%=MONTHES[month]%>,&nbsp;<%=year%></b></center>
@@ -61,11 +60,11 @@
                                 }
                                 if( today == date.getDate() && curMonth){%>
                                    <td bgcolor="ffff00"><center><b><a href="/day/<%-date.getDate()%>/<%-date.getMonth()%>/<%-date.getFullYear()%>"><%=date.getDate()%></a></b>
-                                       <%if(foundEvent){%> * <%}%>
+                                       <%if(foundEvent){%> &#9679; <%}%>
                                        </center></td>
                               <%}else{%>
                                    <td><center><a href="/day/<%-date.getDate()%>/<%-date.getMonth()%>/<%-date.getFullYear()%>"><%=date.getDate()%></a>
-                                           <%if(foundEvent){%> * <%}%>
+                                           <%if(foundEvent){%>&#9679;<%}%>
                                        </center></td>
                               <%}
                                if(date.getDay() == WEEK_LENGTH){%></tr><%}

@@ -35,7 +35,8 @@ function getAllEvents (userId, callback){
 }
 
 function getEventsByDate(userId, year, month, date, callback){
-    connection.query('SELECT * from events  WHERE userId = "'+userId+'" AND year="'+year+'" AND month= "'+month+'" AND date="'+date+'"',
+    connection.query('SELECT * from events  WHERE userId = "'+userId+'" AND year="'+year+
+        '" AND month= "'+month+'" AND date="'+date+'"',
         function(err, rows, fields) {
             if (err)
             {
@@ -49,7 +50,8 @@ function getEventsByDate(userId, year, month, date, callback){
 }
 
 function getEventsByMonth(userId, year, month, callback){
-    connection.query('SELECT * from events WHERE userId = "'+userId+'" AND year="'+year+'" AND month= "'+month+'"' , function(err, rows, fields) {
+    connection.query('SELECT * from events WHERE userId = "'+userId+'" AND year="'+year+'" AND month= "'+month+'"',
+        function(err, rows, fields) {
         if (err)
         {
             console.log('Error while performing Query "getEventsByMonth":' + err.message);
@@ -75,8 +77,10 @@ function getEventById(userId, id, callback){
     });
 }
 
-function addEvent (userId, id, year, month, date, start, end, title, description,  callback){
-    connection.query('INSERT INTO events (id, userId, year, month, date, starthh, endhh, startmm, endmm, title, description) VALUES('+id, userId, year, month, date, starthh, endhh, startmm, endmm, title, description+')', function(err, rows, fields) {
+function addEvent (event, callback){
+    console.log("addEvent::"+JSON.stringify(event))
+    connection.query('INSERT INTO events SET ?', event,
+        function(err, rows, fields) {
         if (err)
         {
             console.log('Error while performing Query "addEvent":' + err.message);
@@ -87,16 +91,9 @@ function addEvent (userId, id, year, month, date, start, end, title, description
         }
     });
 }
-/*
- UPDATE Customers
- SET ContactName='Alfred Schmidt', City='Hamburg'
- WHERE CustomerName='Alfreds Futterkiste';
- //
- INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
- VALUES ('Cardinal','Tom B. Erichsen','Skagen 21','Stavanger','4006','Norway');
-* */
-function deleteEvent (userId, id, callback){
-    connection.query('SELECT * from events LIMIT 2', function(err, rows, fields) {
+
+function deleteEvent (id, callback){
+    connection.query('DELETE from events WHERE id = ?', id, function(err, rows, fields) {
         if (err)
         {
             console.log('Error while performing Query "deleteEvent":' + err.message);
@@ -107,8 +104,8 @@ function deleteEvent (userId, id, callback){
         }
     });
 }
-function updateEvent (userId, id, callback){
-    connection.query('SELECT * from events LIMIT 2', function(err, rows, fields) {
+function updateEvent (event, callback){
+    connection.query('UPDATE events SET ? WHERE id = ?', [event, event.id], function(err, rows, fields) {
         if (err)
         {
             console.log('Error while performing Query "updateEvent":' + err.message);
