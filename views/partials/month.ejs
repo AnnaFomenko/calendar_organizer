@@ -48,17 +48,17 @@
                             {
                                 i++;
                                 foundEvent = false;
-                                if(date.getDay() == 0){%><tr><%}
+                                if(date.getDay() === 0){%><tr><%}
                                 for(var j = 0; j<evtLength; j++)
                                 {
-                                    if(monthEvents[j].date==date.getDate())
+                                    if(monthEvents[j].time.getDate() === date.getDate())
                                     {
                                         foundEvent = true;
                                         //no need more events
                                         break;
                                     }
                                 }
-                                if( today == date.getDate() && curMonth){%>
+                                if( today === date.getDate() && curMonth){%>
                                    <td bgcolor="ffff00"><center><b><a href="/day/<%-date.getDate()%>/<%-date.getMonth()%>/<%-date.getFullYear()%>"><%=date.getDate()%></a></b>
                                        <%if(foundEvent){%> &#9679; <%}%>
                                        </center></td>
@@ -67,7 +67,7 @@
                                            <%if(foundEvent){%>&#9679;<%}%>
                                        </center></td>
                               <%}
-                               if(date.getDay() == WEEK_LENGTH){%></tr><%}
+                               if(date.getDay() === WEEK_LENGTH){%></tr><%}
                                date.setDate(date.getDate()+1);
                             }
                             date.setMonth(month);

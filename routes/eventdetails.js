@@ -1,22 +1,22 @@
-exports.get = function (req, res) {
-    var constants = require("libs/constants");
-    var mysql = require("libs/mysql");
-    const title = "Event Details";
+var Event = require("../libs/Event").Event;
+var constants = require("../libs/constants");
 
-    var id = req.params.id;
-    function handleEventDetails(rows){
-       if(rows && rows.length>0)
-       {
-           const event = rows[0];
-           const back = "/day/"+event.date+"/"+event.month+"/"+event.year;
-           res.render('eventdetails', {title: title, back: back, event: event});
-       }
-       else
-       {
-           //vse propalo
-       }
+exports.get = function (req, res, next) {
+    const userId = req.session.user;
+    if(!userId) {
+        return res.render('login');
     }
-
-    mysql.getEventById(constants.USER_ID, id, handleEventDetails);
-
+    const title = "Event Details";
+    const id = req.params.id;
+    function handleEventDetails(err, rows) {
+        if(err || !rows || rows.length === 0) {
+            err = ( err ) ? err : new Error("Event not found")
+            next(err);
+        } else {
+            const event = Event.createFromJSON(rows[0]);
+            const back = "/day/"+event.getDate()+"/"+event.getMonth()+"/"+event.getFullYear();
+            res.render('eventdetails', {title: title, back: back, event: event});
+        }
+    }
+    req.app.locals.dbConnector.getEventById(userId, id, handleEventDetails);
 }

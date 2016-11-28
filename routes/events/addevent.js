@@ -1,14 +1,11 @@
-const mysql = require("libs/mysql");
-const constants = require("libs/constants");
-const Event = require("libs/event").Event;
+var userAction = require("../../middleware/userAction");
+var constants = require("../../libs/constants");
+var Event = require("../../libs/Event").Event;
+
 exports.post = function (req, res, next) {
-    const event = req.body;
-    function handleAddEvent(rows) {
-        //do something special
-        console.log("handleAddEvent:"+JSON.stringify(rows));
-    }
-    event.userId = constants.USER_ID;
-    Event.validate(event);
-    mysql.addEvent(event, handleAddEvent);
-    res.redirect("/day/"+event.date+"/"+event.month+"/"+event.year);
+    const event = Event.createFromObj(req.body);
+    const userId = req.session.user;
+    event.setUserId(userId);
+    console.log(req.session.user);
+    userAction.change(req, res, next, event, Event.ADD);
 }

@@ -1,17 +1,11 @@
-module.exports = function(req,res,next)
-{
-    res.sendHttpError = function(error)
-    {
+module.exports = function(req, res, next) {
+    res.sendHttpError = function(error) {
         res.status = error.status;
-        console.log('sendHttpError::'+error.status)
-        if(res.req.headers["x-requested-with"]=="XMLHttpRequest"){
+        if(res.req.headers["x-requested-with"] === "XMLHttpRequest") {
              res.json(error);
-        }
-        else
-        {
+        } else {
             res.render("error", {error:error});
         }
-
     };
     next();
 }

@@ -1,15 +1,26 @@
-+-------------+---------------+------+-----+---------+-------+
-| Field       | Type          | Null | Key | Default | Extra |
-+-------------+---------------+------+-----+---------+-------+
-| id          | varchar(32)   | NO   |     | NULL    |       |
-| userId      | bigint(20)    | NO   |     | NULL    |       |
-| year        | int(11)       | NO   |     | NULL    |       |
-| month       | int(11)       | NO   |     | NULL    |       |
-| date        | int(11)       | NO   |     | NULL    |       |
-| startmm     | int(11)       | YES  |     | NULL    |       |
-| endmm       | int(11)       | YES  |     | NULL    |       |
-| title       | varchar(64)   | YES  |     | NULL    |       |
-| description | varchar(1024) | YES  |     | NULL    |       |
-| starthh     | int(11)       | YES  |     | NULL    |       |
-| endhh       | int(11)       | YES  |     | NULL    |       |
-+-------------+---------------+------+-----+---------+-------+
+event_calendar
+
+users
+
++----------+-------------+------+-----+-------------------+-----------------------------+
+| Field    | Type        | Null | Key | Default           | Extra                       |
++----------+-------------+------+-----+-------------------+-----------------------------+
+| userId   | bigint(20)  | NO   | PRI | NULL              | auto_increment              |
+| time     | timestamp   | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| login    | varchar(32) | YES  |     | NULL              |                             |
+| password | varchar(32) | YES  |     | NULL              |                             |
++----------+-------------+------+-----+-------------------+-----------------------------+
+
+events
+
++-------------+---------------+------+-----+-------------------+-----------------------------+
+| Field       | Type          | Null | Key | Default           | Extra                       |
++-------------+---------------+------+-----+-------------------+-----------------------------+
+| id          | varchar(32)   | NO   | PRI | NULL              |                             |
+| userId      | bigint(20)    | NO   |     | NULL              |                             |
+| time        | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| title       | varchar(64)   | YES  |     | NULL              |                             |
+| description | varchar(1024) | YES  |     | NULL              |                             |
+| allDay      | tinyint(1)    | YES  |     | NULL              |                             |
+| endTime     | timestamp     | NO   |     | CURRENT_TIMESTAMP |                             |
++-------------+---------------+------+-----+-------------------+-----------------------------+

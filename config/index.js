@@ -1,6 +1,3 @@
-/**
- * Created by annafomenko on 11/18/16.
- */
 var nconf = require('nconf');
 var path = require('path');
 

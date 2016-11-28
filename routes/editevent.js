@@ -1,36 +1,33 @@
-const mysql = require('libs/mysql');
-const constants= require('libs/constants');
-const crypto = require("crypto");
+var Event = require("../libs/Event").Event;
+var constants = require("../libs/constants");
 
-exports.get = function (req, res, next)
-{
+exports.get = function (req, res, next) {
+    const userId = req.session.user;
+    if(!userId) {
+        return res.render('login');
+    }
     //create new event
-    const id = crypto.randomBytes(16).toString("hex");
-
-    var date = new Date(req.query.add);
-    var event = {"userId":constants.userId,"title":"New Event", "description":"Event Description", "id":id,
-        "year":date.getFullYear(),"month":date.getMonth(),"date":date.getDate(),
-        "starthh":"00", "startmm":"00", "endhh":"00", "endmm":"00", "time": date};
+    const date = new Date(req.query.add);
+    const event = Event.createNew(userId, date);
     req.event = event;
-    req.action = "addevent";
+    req.action = Event.ADD;
     next();
 }
 
 exports.post = function (req, res, next) {
     //update event
-    req.event = JSON.parse(req.body.edit);
-    req.action = "updevent";
+    req.event = Event.createFromJSON(req.body.edit);
+    req.action = Event.UPDATE;
     next();
 }
 
-exports.all = function (req, res)
-{
-    var event = req.event;
-    const title = event.title;
+exports.all = function (req, res) {
+    const event = req.event;
+    const title = event.getTitle();
     var date = new Date();
-    date.setFullYear(event.year);
-    date.setMonth(event.month);
-    date.setDate(event.date);
-    const back = "/day/"+event.date+"/"+event.month+"/"+event.year;
+    date.setFullYear(event.getFullYear());
+    date.setMonth(event.getMonth());
+    date.setDate(event.getDate());
+    const back = "/day/"+event.getDate()+"/"+event.getMonth()+"/"+event.getFullYear();
     res.render('editevent', {title:title, back:back, event:event, action:req.action});
 }
