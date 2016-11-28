@@ -2,7 +2,6 @@ var constants = require("../libs/constants");
 
 exports.get = function (req, res, next) {
     const userId = req.session.user;
-    console.log("userId="+userId);
     if(!userId) {
         return res.render('login');
     }

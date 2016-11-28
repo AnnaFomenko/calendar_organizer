@@ -16,6 +16,14 @@ module.exports = User;
 User.prototype.encryptPassword = function encryptPassword(password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 }
+//SETTERS
+User.prototype.setUserId = function setUserId(userId) {
+     this.id = userId;
+}
+//GETTERS
+User.prototype.getLogin = function getLogin() {
+    return this.login;
+}
 
 User.prototype.getPassword = function getPassword() {
         return this.password;
@@ -25,10 +33,11 @@ User.prototype.getUserId = function getUserId() {
     return this.id;
 }
 
+
 User.prototype.checkPassword = function checkPassword(password) {
     return this.encryptPassword(password) === this.hashpassword;
 }
-
+//serialize for database
 User.prototype.serialize = function serialize() {
     return {login:this.login, hashpassword:this.hashpassword, salt:this.salt};
 }
@@ -50,9 +59,9 @@ User.authorize = function authorize(dbConnector, login, password, callback) {
         function(callback) {
             dbConnector.getUser( login, callback);
         },
-        function(rows, callback) {
-            if(rows && rows.length>0) {
-                user = User.deserialize(rows[0], password);
+        function(results, callback) {
+            if(results && results.length>0) {
+                user = User.deserialize(results[0], password);
                 if(user.checkPassword(password)) {
                     callback(null, user);
                 } else {
@@ -60,8 +69,17 @@ User.authorize = function authorize(dbConnector, login, password, callback) {
                 }
             } else {
                 user = new User(login, password);
-                dbConnector.registerUser(user, function(err, user) {
+                dbConnector.registerUser(user, function(err, results) {
                     callback(err, user)});
+            }
+        },
+        function(user, callback) {
+            if(!user.userId) {
+                dbConnector.getUser( user.getLogin(), function(err, results) {
+                    user.setUserId(results[0].userId);
+                    callback(err, user)});
+            } else {
+                callback(null, user);
             }
         }
     ], callback)

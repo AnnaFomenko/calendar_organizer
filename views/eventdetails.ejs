@@ -9,8 +9,8 @@
     <center>
         <h1><span class="label label-info"><%=event.getTitle()%></span></h1>
         <h2><span class="label label-default"><%=event.getDescription()%></span></h2>
-        <h3>Starts:<span class="label label-default"><%=event.getHours()%>:<%=event.getMinutes()%></span></h3>
-        <h3>Ends:<span class="label label-default"><%=event.getHours()%>:<%=event.getMinutes()%></span></h3>
+        <h3>Starts:<span class="label label-default"><%-event.getHours()%>:<%-event.getMinutes()%></span></h3>
+        <h3>Ends:<span class="label label-default"><%-event.getEndHours()%>:<%-event.getEndMinutes()%></span></h3>
             <form action="/editevent" method="post">
                 <button name="edit" class="btn btn-primary" value="<%=JSON.stringify(event)%>">Edit</button>
             </form>

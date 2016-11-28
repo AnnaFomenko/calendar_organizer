@@ -28,6 +28,10 @@ DBConnector.prototype.initialize = function initialize (callback) {
         function connect(callback) {
             dbConnector.connection.connect(callback);
         },
+        //timezone
+        function setTimeZone(callback) {
+           dbConnector.connection.query('SET time_zone = SYSTEM', callback);
+        },
         //create db
         function createDB(callback) {
             dbConnector.connection.query('CREATE DATABASE IF NOT EXISTS ' + config.get("mysql:database"), callback);
@@ -42,11 +46,11 @@ DBConnector.prototype.initialize = function initialize (callback) {
             dbConnector.connection.query('CREATE TABLE IF NOT EXISTS '+ config.get("mysql:events")+
                 ' (id VARCHAR(32) NOT NULL PRIMARY KEY,' +
                 'userId BIGINT NOT NULL,' +
-                'time TIMESTAMP DEFAULT NOW(),' +
+                'time TIMESTAMP NOT NULL,' +
                 'title VARCHAR(64),' +
                 'description VARCHAR(1024),' +
                 'allDay TINYINT(1),' +
-                'endTime TIMESTAMP DEFAULT NOW())',
+                'endTime TIMESTAMP NOT NULL DEFAULT NOW())',
                 callback);
         },
         //users table
@@ -113,7 +117,7 @@ DBConnector.prototype.getEventById = function getEventById(userId, id, callback)
 }
 
 DBConnector.prototype.addEvent = function addEvent (event, callback) {
-    this.connection.query('INSERT INTO events SET ?', event,
+    this.connection.query('INSERT INTO events SET ?', event.serialize(),
         function handleAddEvent(err, rows, fields) {
             callback(err, rows);
         });
@@ -127,7 +131,7 @@ DBConnector.prototype.deleteEvent = function deleteEvent (id, callback) {
 }
 
 DBConnector.prototype.updateEvent = function updateEvent(event, callback) {
-    this.connection.query('UPDATE events SET ? WHERE id = ?', [event, event.id],
+    this.connection.query('UPDATE events SET ? WHERE id = ?', [event.serialize(), event.getId()],
         function handleUpdateEvent(err, rows, fields) {
             callback(err, rows);
         });
@@ -143,8 +147,8 @@ DBConnector.prototype.getUser = function getUser(login, callback) {
 
 DBConnector.prototype.registerUser = function registerUser(user, callback) {
     this.connection.query('INSERT INTO users SET ?', user.serialize(),
-        function handleRegisterUser(err, rows, fields) {
-            callback(err, rows);
+        function handleRegisterUser(err, results) {
+            callback(err, results);
         });
 }
 

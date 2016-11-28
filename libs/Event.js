@@ -3,7 +3,7 @@ var crypto = require("crypto");
 
 //static const
 Event.ADD = 'addevent';
-Event.UPDATE = 'upevent';
+Event.UPDATE = 'updevent';
 Event.DELETE = 'delevent';
 
 //constructor
@@ -24,22 +24,24 @@ Event.createNew = function createNew(userId, date) {
 
 Event.createFromObj = function createFromObj(obj) {
     const date = new Date();
-    const allDay = (obj.allday === 'on')? true: false;
-    var end;
+    const allDay = false;//(obj.allday === 'on')? true: false;
+    var end = new Date();
     date.setFullYear(obj.year);
     date.setMonth(obj.month);
     date.setDate(obj.date);
-
+    end.setFullYear(obj.year);
+    end.setMonth(obj.month);
+    end.setDate(obj.date);
     if(allDay) {
-        date.setHours(0);
-        date.setMinutes(0);
-    }
-    end = new Date(date.getTime());
-    if(!allDay) {
-        date.setHours(obj.starthh);
-        date.setMinutes(obj.startmm);
-        end.setHours(obj.endhh);
-        end.setMinutes(obj.endmm);
+        date.setUTCHours(0);
+        date.setUTCMinutes(0);
+        end.setUTCHours(0);
+        end.setUTCMinutes(0);
+    } else {
+        date.setUTCHours(obj.starthh);
+        date.setUTCMinutes(obj.startmm);
+        end.setUTCHours(obj.endhh);
+        end.setUTCMinutes(obj.endmm);
     }
 
     return new Event(obj.id, 0, obj.title, obj.description, date, allDay, end);
@@ -47,12 +49,23 @@ Event.createFromObj = function createFromObj(obj) {
 
 Event.createFromJSON = function createFromJSON(evt) {
     try {
-        var evtObj = JSON.parse(evt);
-    } catch(err) {
-        var userId = (evt.userId)? evt.userId : 0;
-        return new Event(evt.id, evt, evt.title, evt.description, evt.time, evt.allDay, evt.edTime);
+        const evtObj = JSON.parse(evt);
+        var userId = (evtObj.userId) ? evtObj.userId : 0;
+        return new Event(evtObj.id, userId, evtObj.title, evtObj.description, new Date(evtObj.time), evtObj.allDay, new Date(evtObj.endTime));
+    }catch(err){
+        return null;
     }
-    return null;
+}
+
+//serialize for database
+Event.prototype.serialize = function serialize() {
+    return {id:this.id,
+            userId:this.userId,
+            title:this.title,
+            description:this.description,
+            time:this.time,
+            allDay:this.allDay,
+            endTime:this.endTime};
 }
 
 Event.validate = function validate(evt) {
@@ -82,13 +95,20 @@ Event.prototype.getFullYear = function getFullYear() {
 }
 
 Event.prototype.getHours = function getHours() {
-    return this.time.getHours();
+    return this.time.getUTCHours();
 }
 
 Event.prototype.getMinutes = function getMinutes() {
-    return this.time.getMinutes();
+    return this.time.getUTCMinutes();
 }
 
+Event.prototype.getEndHours = function getHours() {
+    return this.endTime.getUTCHours();
+}
+
+Event.prototype.getEndMinutes = function getMinutes() {
+    return this.endTime.getUTCMinutes();
+}
 //event details
 Event.prototype.getTitle = function getTitle() {
     return this.title;

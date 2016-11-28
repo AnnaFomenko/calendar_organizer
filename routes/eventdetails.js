@@ -13,7 +13,7 @@ exports.get = function (req, res, next) {
             err = ( err ) ? err : new Error("Event not found")
             next(err);
         } else {
-            const event = Event.createFromJSON(rows[0]);
+            const event = Event.createFromJSON(JSON.stringify(rows[0]));
             const back = "/day/"+event.getDate()+"/"+event.getMonth()+"/"+event.getFullYear();
             res.render('eventdetails', {title: title, back: back, event: event});
         }

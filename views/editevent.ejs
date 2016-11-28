@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group">
                 <label class="btn btn-primary active">
-                    <input type="checkbox" name="allday" checked autocomplete="off"> All-day
+                    <input type="checkbox" name="allday"  autocomplete="off"> All-day
                 </label>
                 </div>
                 <div class="form-group">
@@ -41,9 +41,9 @@
                     <label for="input-end" class="col-lg-2 control-label">Ends</label>
 
                     <div class="col-lg-2">
-                        <input name="endhh" value="<%-event.getHours()%>" type="number"  min="0" max="24"  id="input-end-hh" >
+                        <input name="endhh" value="<%-event.getEndHours()%>" type="number"  min="0" max="24"  id="input-end-hh" >
                         :
-                        <input name="endmm" value="<%-event.getMinutes()%>" type="number"  min="0" max="59"  id="input-end-mm" >
+                        <input name="endmm" value="<%-event.getEndMinutes()%>" type="number"  min="0" max="59"  id="input-end-mm" >
                     </div>
                 </div>
                 <input type='hidden' name='id' value="<%-event.getId()%>"/>
@@ -53,10 +53,12 @@
                 <div class="form-group">
                     <div class="col-lg-offset-2 col-lg-10">
                         <button type="submit" class="btn btn-primary" data-loading-text="Saving..." value="">Save</button>
-                        <button type="button" class="btn btn-primary" data-loading-text="Deleting..." value="">Delete</button>
                         <span class="help-block error"></span>
                     </div>
                 </div>
+            </form>
+            <form action="/delevent" method="post">
+                <button name="delete" class="btn btn-primary" value="<%=JSON.stringify(event)%>">Delete</button>
             </form>
         </div>
     </center>

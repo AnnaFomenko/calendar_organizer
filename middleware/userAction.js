@@ -5,7 +5,6 @@ exports.change = function (req, res, next, event, action) {
         if(err){
             next(err);
         } else {
-            console.log(event);
             res.redirect("/day/"+event.getDate()+"/"+event.getMonth()+"/"+event.getFullYear());
         }
     }
